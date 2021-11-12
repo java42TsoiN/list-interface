@@ -45,7 +45,9 @@ public interface List<T> extends Iterable<T>{
 	 */
 	default boolean contains(T pattern) {
 		//O[N] for ArrayList and LinkedList
-		return indexOf(new EqualPredicate<T>(pattern))>=0;
+//		return indexOf(new EqualPredicate<T>(pattern))>=0;
+		Predicate<T> lambdaPredicate;
+		return indexOf(lambdaPredicate = t -> t.equals(pattern))>=0;
 	};
 	
 	/**
@@ -55,7 +57,9 @@ public interface List<T> extends Iterable<T>{
 	 */
 	default int indexOf(T pattern) {
 		//O[N] for ArrayList and LinkedList
-		return indexOf(new EqualPredicate<T>(pattern));
+		//TODO write code without class EqualsPattern
+		Predicate<T> lambdaPredicate;
+		return indexOf(lambdaPredicate = t -> t.equals(pattern));
 	};
 	
 	/**
@@ -65,7 +69,9 @@ public interface List<T> extends Iterable<T>{
 	 */
 	default int lastIndexOf(T pattern) {
 		//O[N] for ArrayList and LinkedList
-		return lastIndexOf(new EqualPredicate<T>(pattern));
+		//TODO write code without class EqualsPattern
+		Predicate<T> lambdaPredicate;
+		return lastIndexOf(lambdaPredicate = t -> t.equals(pattern));
 	};
 	
 	/**
@@ -129,7 +135,9 @@ public interface List<T> extends Iterable<T>{
 			clear();
 			return true;
 		}
-		return removeIf(new RemoveAllPredicate<>(list));
+		//TODO rewrite code based on removeIf but  without additional Predicate class
+		Predicate<T> lambdaPredicate;
+		return removeIf(lambdaPredicate = t -> list.contains(t));
 	}
 	/**
 	 * removes all objects from *this* list that don't exist in a given list
@@ -138,7 +146,9 @@ public interface List<T> extends Iterable<T>{
 	 */
 	default boolean retainAll(List<T> list) {
 		//O[N] (need to update removeIf for ArrayList)
-		return removeIf(new RetainAllPredicate<>(list));
+		//TODO rewrite code based on removeIf but  without additional Predicate class
+		Predicate<T> lambdaPredicate= t -> list.contains(t);
+		return removeIf(lambdaPredicate.negate());
 	}
 	/**
 	 * searches for pattern in sorted list by given comparator
